@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name_short: MyString
+  name_full: MyString
+  likes_count: 1
+
+two:
+  name_short: MyString
+  name_full: MyString
+  likes_count: 1

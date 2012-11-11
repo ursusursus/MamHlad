@@ -1,0 +1,103 @@
+<h1><%= @canteen.name_full %></h1>
+
+<h2>Počet lajkov</h2>
+<p><%= @canteen.likes_count %> lajkov</p>
+
+<h2>Aktuálne čakanie</h2>
+<p> 
+	<% if @canteen.waits.count > 0 %>
+		<%= @canteen.waits.last.value %> minút <br>
+		<small>
+			Aktualizované pred <%= time_ago_in_words(@canteen.waits.last.created_at) %>
+		</small> <br>
+		<small>
+			Aktualizované spolu <%= @canteen.waits.count %>-krát
+		</small>
+	<% else %>
+		Ešte nebolo zadané
+	<% end %>	
+</p>
+
+<h2>Jedálny lístok</h2>
+<% if @canteen.meals.count > 0 %>
+	<ul>
+	<% for meal in @canteen.meals %>
+
+		<li>
+			<p><%= meal.name %></p>
+			<p><%= meal.price %> €</p>
+			<p>Počet picknutí: <%= meal.pick_count %>-krát</p>
+		</li>
+
+	<% end %>
+	</ul>
+<% else %>
+
+	<p>Neboli priradené žiadne jedlá</p>
+
+<% end %>
+
+<h2>Debug dnešný Jedálny lístok</h2>
+<% if @meals.count > 0 %>
+	<ul>
+	<% for meal in @meals %>
+
+		<li>
+			<p><%= meal.name %></p>
+			<p><%= meal.price %> €</p>
+			<p>Počet picknutí: <%= meal.pick_count %>-krát</p>
+		</li>
+
+	<% end %>
+	</ul>
+<% else %>
+
+	<p>Neboli priradené žiadne jedlá</p>
+
+<% end %>
+
+<h2>Komentáre</h2>
+<% if @canteen.comments.count > 0 %>
+	<ul>
+	<% for comment in @canteen.comments %>
+		<li>
+			<p><%= comment.content %></p>
+			<small>Napísal <%= comment.author %></small> <br>
+			<small>pred <%= time_ago_in_words(comment.created_at) %></small>
+			<small>Počet upvotes: <%= comment.upvote_count %></small>
+			<small>Počet upvotes: <%= comment.upvote_count %></small>
+		</li>
+	<% end %>
+	</ul>
+<% else %>
+	<p>Žiadne komentáre. Buď prvý!</p>	
+<% end %>
+
+<h3>Napísať komentár</h3>
+<%= form_for ([@canteen, @canteen.comments.build]) do |f| %>
+	<p>
+		<%= f.label :author %> <br>
+		<%= f.text_field :author %>
+	</p>
+	<p>
+		<%= f.label :content %> <br>
+		<%= f.text_area :content %>
+	</p>
+	<p>
+		<%= f.submit "Odoslať komentár" %>
+	</p>
+
+<% end %>
+
+<h2>Otváracie hodiny</h2>
+<% if @canteen.working_time %>
+	<p>Pondelok <%= @canteen.working_time.monday %></p>
+	<p>Utorok <%= @canteen.working_time.tuesday %></p>
+	<p>Streda <%= @canteen.working_time.wednesday %></p>
+	<p>Štvrtok <%= @canteen.working_time.thursday %></p>
+	<p>Piatok <%= @canteen.working_time.friday %></p>
+	<p>Sobota <%= @canteen.working_time.saturday %></p>
+	<p>Nedeľa <%= @canteen.working_time.sunday %></p>
+<% else %>
+	<p>Otváracie hodiny ešte neboli priradené</p>
+<% end %>
