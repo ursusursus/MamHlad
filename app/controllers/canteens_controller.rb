@@ -5,7 +5,7 @@ class CanteensController < ApplicationController
 
   def show
   	@canteen = Canteen.find(params[:id])
-    #@meals = Meal.where()
+    #Served.where(served_at: Date.today)
   end
 
   def like
