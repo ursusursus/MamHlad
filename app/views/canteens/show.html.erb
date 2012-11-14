@@ -2,6 +2,7 @@
 
 <h2>Počet lajkov</h2>
 <p><%= @canteen.likes_count %> lajkov</p>
+<p><%= link_to "Lajknut jedalen", "http://www.google.com" %></p>
 
 <h2>Aktuálne čakanie</h2>
 <p> 
@@ -37,24 +38,6 @@
 
 <% end %>
 
-<h2>Debug dnešný Jedálny lístok</h2>
-<% if @meals.count > 0 %>
-	<ul>
-	<% for meal in @meals %>
-
-		<li>
-			<p><%= meal.name %></p>
-			<p><%= meal.price %> €</p>
-			<p>Počet picknutí: <%= meal.pick_count %>-krát</p>
-		</li>
-
-	<% end %>
-	</ul>
-<% else %>
-
-	<p>Neboli priradené žiadne jedlá</p>
-
-<% end %>
 
 <h2>Komentáre</h2>
 <% if @canteen.comments.count > 0 %>

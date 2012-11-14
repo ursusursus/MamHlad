@@ -5,13 +5,13 @@ MamHlad::Application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
 
   root :to => "canteens#index"
-  
-  match "canteens/:id/like", :to => "canteens#like"
-  
+    
   resources :canteens do
     resources :meals
     resources :waits
     resources :comments
+    # get "/like" => "Canteens#like"
+    match "/like", :to => "canteens#like", :as => "like"
   end
 
   # The priority is based upon order of creation:
