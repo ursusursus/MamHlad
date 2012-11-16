@@ -1,15 +1,17 @@
 class Canteen < ActiveRecord::Base
 	attr_accessible :likes_count, :name_full, :name_short
 
-	has_many :meals, :order => "pick_count DESC"
+	has_many :meals
 	has_many :waits
 	has_many :comments
 	has_one :working_time
 
-	def 
+	def todays_waits
+		waits.where(["created_at >= ? AND created_at < ?",Date.today.beginning_of_day, Date.today.end_of_day])
+	end
 
-	def like_canteen
-		self.likes_count
+	def todays_meals
+		meals.joins(:serving_dates).where(serving_dates: {:served_at => Date.today}).order("pick_count DESC")
 	end
 
 	def upvote_comment

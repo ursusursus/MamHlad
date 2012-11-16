@@ -1,18 +1,20 @@
 <h1><%= @canteen.name_full %></h1>
 
+<p><%= link_to "Späť", root_path %></p>
+
 <h2>Počet lajkov</h2>
 <p><%= @canteen.likes_count %> lajkov</p>
-<p><%= link_to "Lajknut jedalen", "http://www.google.com" %></p>
+<p><%= link_to "Lajknut jedalen", canteen_like_path(@canteen) %></p>
 
 <h2>Aktuálne čakanie</h2>
 <p> 
-	<% if @canteen.waits.count > 0 %>
-		<%= @canteen.waits.last.value %> minút <br>
+	<% if @canteen.todays_waits.count > 0 %>
+		<%= @canteen.todays_waits.last.value %> minút <br>
 		<small>
-			Aktualizované pred <%= time_ago_in_words(@canteen.waits.last.created_at) %>
+			Aktualizované pred <%= time_ago_in_words(@canteen.todays_waits.last.created_at) %>
 		</small> <br>
 		<small>
-			Aktualizované spolu <%= @canteen.waits.count %>-krát
+			Aktualizované spolu <%= @canteen.todays_waits.count %>-krát
 		</small>
 	<% else %>
 		Ešte nebolo zadané
@@ -20,9 +22,9 @@
 </p>
 
 <h2>Jedálny lístok</h2>
-<% if @canteen.meals.count > 0 %>
+<% if @canteen.todays_meals.count > 0 %>
 	<ul>
-	<% for meal in @canteen.meals %>
+	<% for meal in @canteen.todays_meals %>
 
 		<li>
 			<p><%= meal.name %></p>
@@ -48,7 +50,9 @@
 			<small>Napísal <%= comment.author %></small> <br>
 			<small>pred <%= time_ago_in_words(comment.created_at) %></small>
 			<small>Počet upvotes: <%= comment.upvote_count %></small>
-			<small>Počet upvotes: <%= comment.upvote_count %></small>
+			<small><%= link_to "Upvotuj", canteen_comment_upvote_path(@canteen, comment) %></small>
+			<small>Počet downvotes: <%= comment.downvote_count %></small>
+			<small><%= link_to "Downvotuj", canteen_comment_downvote_path(@canteen, comment) %></small>
 		</li>
 	<% end %>
 	</ul>
@@ -83,4 +87,24 @@
 	<p>Nedeľa <%= @canteen.working_time.sunday %></p>
 <% else %>
 	<p>Otváracie hodiny ešte neboli priradené</p>
+<% end %>
+
+<h2>Aktualizovať</h2>
+<%= form_tag(canteen_vote_path(@canteen), :method=>'post', :multipart => true) do %>
+	<p>Čakal som: <br>
+		<%= radio_button_tag :wait, 5, :checked => true %> <%= "5 minút" %><br />
+		<%= radio_button_tag :wait, 10 %> <%= "10 minút" %><br />
+		<%= radio_button_tag :wait, 15 %> <%= "15 minút" %><br />
+	</p>
+	<% if @canteen.todays_meals.count > 0 %>
+	 	<p>
+	 		Jedol som: <br />
+	 		<% @canteen.todays_meals.each do |meal| %>
+	  			<%= radio_button_tag :meal, meal.id, :checked => true %> <%= meal.name %><br />
+			<% end %>
+	 	</p>
+ 	<% end %>
+ 	<p>
+ 		<%= submit_tag 'Submit' %>
+ 	</p>
 <% end %>

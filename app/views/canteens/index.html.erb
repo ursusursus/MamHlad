@@ -1,23 +1,21 @@
 <h1>MamHlad</h1>
 
-<h4>Dnešný dátum</h4>
-<p><%= Date.today %></p>
-
+<h2>Jedálne</h2>
 <% for canteen in @canteens %>
 	<h2><%= link_to canteen.name_short, canteen %></h2>
 
 	<p>Aktuálne čakanie: 
-		<% if canteen.waits.count > 0 %>
-			<%= canteen.waits.last.value %> minút <br>
-			<small>Aktualizované pred <%= time_ago_in_words(canteen.waits.last.created_at) %></small>
+		<% if canteen.todays_waits.count > 0 %>
+			<%= canteen.todays_waits.last.value %> minút <br>
+			<small>Aktualizované pred <%= time_ago_in_words(canteen.todays_waits.last.created_at) %></small>
 		<% else %>
 			Ešte nebolo zadané
 		<% end %>	
 	</p>
 	<p>
 		Najpickovanejšie jedlo:
-		<% if canteen.meals.count > 0 %>
-			<%= canteen.meals.first.name %>
+		<% if canteen.todays_meals.count > 0 %>
+			<%= canteen.todays_meals.first.name %>
 		<% else %>
 			Žiadne jedlo nebolo ešte vybrané
 		<% end %>

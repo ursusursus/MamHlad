@@ -9,9 +9,12 @@ MamHlad::Application.routes.draw do
   resources :canteens do
     resources :meals
     resources :waits
-    resources :comments
-    # get "/like" => "Canteens#like"
+    resources :comments do
+      match "/upvote", :to => "comments#upvote", :as => "upvote"
+      match "/downvote", :to => "comments#downvote", :as => "downvote"
+    end
     match "/like", :to => "canteens#like", :as => "like"
+    match "/vote", :to => "canteens#vote", :as => "vote"
   end
 
   # The priority is based upon order of creation:
