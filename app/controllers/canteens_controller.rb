@@ -20,19 +20,18 @@ class CanteensController < ApplicationController
     wait = Wait.create(:value => params[:wait], :canteen_id => canteen.id)
     if params[:meal]
       meal = Meal.find(params[:meal])
-      Meal.increment_counter(:pick_count, meal.id)
+      MealPick.create(:meal_id => params[:meal])
+      impression_value = params[:impression]
+      if impression_value == "1"
+        Meal.increment_counter(:impression_positive, meal.id)
+      elsif impression_value == "0"
+        Meal.increment_counter(:impression_neutral, meal.id)
+      else
+        Meal.increment_counter(:impression_negative, meal.id)
+      end
     end
-
-    redirect_to canteen
+    
+    redirect_to canteen, :notice => "Uspesne ste hlasovali"
   end
-
-  # def upvote_comment
-  #   Comment.increment_counter(:upvote_count, comment.id)
-  # end
-
-  # def downvote_comment
-  #   Comment.increment_counter(:downvote_count, comment.id)
-  # end
-
 
 end

@@ -15,7 +15,7 @@
 	<p>
 		Najpickovanejšie jedlo:
 		<% if canteen.todays_meals.count > 0 %>
-			<%= canteen.todays_meals.first.name %>
+			<%= canteen.todays_most_picked_meal.name %>
 		<% else %>
 			Žiadne jedlo nebolo ešte vybrané
 		<% end %>

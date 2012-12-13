@@ -21,15 +21,63 @@
 	<% end %>	
 </p>
 
-<h2>Jedálny lístok</h2>
+<h2>Priemerné čakanie</h2>
+<p>
+	<% if @canteen.todays_waits.count > 0 %>
+		<%= @canteen.waits.average("value").round %> minút <br>
+	<% else %>
+		Ešte nebolo zadané
+	<% end %>
+</p>
+
+<h2>Dnes</h2>
 <% if @canteen.todays_meals.count > 0 %>
 	<ul>
 	<% for meal in @canteen.todays_meals %>
 
 		<li>
 			<p><%= meal.name %></p>
-			<p><%= meal.price %> €</p>
-			<p>Počet picknutí: <%= meal.pick_count %>-krát</p>
+			<p><%= number_to_currency(meal.price, :unit => "€", :format => "%n %u") %></p>
+			<p>Počet kupení: <%= meal.todays_pick_count %></p>
+			<p>Rating: :) <%= meal.impression_positive %>   :| <%= meal.impression_neutral %>   :( <%= meal.impression_negative %></p>
+		</li>
+
+	<% end %>
+	</ul>
+<% else %>
+
+	<p>Neboli priradené žiadne jedlá</p>
+
+<% end %>
+
+
+<h2>TOP 3 najkupovanejšie</h2>
+<% if @canteen.meals.count > 0 %>
+	<ul>
+	<% for meal in @canteen.top3_most_picked %>
+
+		<li>
+			<p><%= meal.name %></p>
+			<p>Počet kupení: <%= meal.todays_pick_count %></p>
+		</li>
+
+	<% end %>
+	</ul>
+<% else %>
+
+	<p>Neboli priradené žiadne jedlá</p>
+
+<% end %>
+
+
+<h2>TOP 3 najobľúbenejšie</h2>
+<% if @canteen.meals.count > 0 %>
+	<ul>
+	<% for meal in @canteen.top3_most_liked %>
+
+		<li>
+			<p><%= meal.name %></p>
+			<p>Rating: :) <%= meal.impression_positive %> :| <%= meal.impression_neutral %> :( <%= meal.impression_negative %></p>
 		</li>
 
 	<% end %>
@@ -104,6 +152,11 @@
 			<% end %>
 	 	</p>
  	<% end %>
+ 	<p>Čakal som: <br>
+		<%= radio_button_tag :impression, 1, :checked %> <%= "Chutilo mi" %><br />
+		<%= radio_button_tag :impression, 0, :checked => true %> <%= "Dalo sa" %><br />
+		<%= radio_button_tag :impression, -1 %> <%= "Nechutilo mi" %><br />
+	</p>
  	<p>
  		<%= submit_tag 'Submit' %>
  	</p>

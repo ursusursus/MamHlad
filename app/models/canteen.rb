@@ -11,13 +11,19 @@ class Canteen < ActiveRecord::Base
 	end
 
 	def todays_meals
-		meals.joins(:serving_dates).where(serving_dates: {:served_at => Date.today}).order("pick_count DESC")
+		meals.joins(:serving_dates).where(serving_dates: {:served_at => Date.today}).sort_by {|meal| meal.todays_pick_count}.reverse
 	end
 
-	def upvote_comment
+	def todays_most_picked_meal
+		todays_meals.first
 	end
 
-	def downvote_comment
+	def top3_most_picked
+		meals.sort_by {|m| m.meal_picks.count}.reverse.first(3)
+	end
+
+	def top3_most_liked
+		meals.sort_by {|m| m.impression_sum}.reverse.first(3)
 	end
 
 end
