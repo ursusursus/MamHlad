@@ -3,6 +3,7 @@
 <h2>Jedálne</h2>
 <% for canteen in @canteens %>
 	<h2><%= link_to canteen.name_short, canteen %></h2>
+	<p><%= image_tag canteen.photo.url(:medium) %></p>
 
 	<p>Aktuálne čakanie: 
 		<% if canteen.todays_waits.count > 0 %>

@@ -1,4 +1,5 @@
 <h1><%= @canteen.name_full %></h1>
+<p><%= image_tag @canteen.photo.url %></p>
 
 <p><%= link_to "Späť", root_path %></p>
 
@@ -36,10 +37,11 @@
 	<% for meal in @canteen.todays_meals %>
 
 		<li>
+			<p><%= image_tag meal.photo.url(:medium) %></p>
 			<p><%= meal.name %></p>
 			<p><%= number_to_currency(meal.price, :unit => "€", :format => "%n %u") %></p>
 			<p>Počet kupení: <%= meal.todays_pick_count %></p>
-			<p>Rating: :) <%= meal.impression_positive %>   :| <%= meal.impression_neutral %>   :( <%= meal.impression_negative %></p>
+			<p>Rating: :) <%= meal.impression_positive %> :( <%= meal.impression_negative %></p>
 		</li>
 
 	<% end %>
@@ -51,43 +53,31 @@
 <% end %>
 
 
-<h2>TOP 3 najkupovanejšie</h2>
+<h2>TOP</h2>
+
+<h3>Najobľúbenejšie</h3>
 <% if @canteen.meals.count > 0 %>
-	<ul>
-	<% for meal in @canteen.top3_most_picked %>
-
-		<li>
-			<p><%= meal.name %></p>
-			<p>Počet kupení: <%= meal.todays_pick_count %></p>
-		</li>
-
-	<% end %>
-	</ul>
+	<% meal = @canteen.top_liked_meal %>
+	<p><%= image_tag meal.photo.url(:medium) %></p>
+	<p><%= meal.name %></p>
+	<p>Rating: :) <%= meal.impression_positive %> :( <%= meal.impression_negative %></p>
 <% else %>
 
 	<p>Neboli priradené žiadne jedlá</p>
 
 <% end %>
 
-
-<h2>TOP 3 najobľúbenejšie</h2>
+<h3>Najkupovanejšie</h3>
 <% if @canteen.meals.count > 0 %>
-	<ul>
-	<% for meal in @canteen.top3_most_liked %>
-
-		<li>
-			<p><%= meal.name %></p>
-			<p>Rating: :) <%= meal.impression_positive %> :| <%= meal.impression_neutral %> :( <%= meal.impression_negative %></p>
-		</li>
-
-	<% end %>
-	</ul>
+	<% meal = @canteen.top_picked_meal %>
+	<p><%= image_tag meal.photo.url(:medium) %></p>
+	<p><%= meal.name %></p>
+	<p>Počet kupení: <%= meal.meal_picks.count %></p>
 <% else %>
 
 	<p>Neboli priradené žiadne jedlá</p>
 
 <% end %>
-
 
 <h2>Komentáre</h2>
 <% if @canteen.comments.count > 0 %>
@@ -152,9 +142,8 @@
 			<% end %>
 	 	</p>
  	<% end %>
- 	<p>Čakal som: <br>
+ 	<p>Ohodnotiť: <br>
 		<%= radio_button_tag :impression, 1, :checked %> <%= "Chutilo mi" %><br />
-		<%= radio_button_tag :impression, 0, :checked => true %> <%= "Dalo sa" %><br />
 		<%= radio_button_tag :impression, -1 %> <%= "Nechutilo mi" %><br />
 	</p>
  	<p>

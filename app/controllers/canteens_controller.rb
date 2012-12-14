@@ -24,8 +24,6 @@ class CanteensController < ApplicationController
       impression_value = params[:impression]
       if impression_value == "1"
         Meal.increment_counter(:impression_positive, meal.id)
-      elsif impression_value == "0"
-        Meal.increment_counter(:impression_neutral, meal.id)
       else
         Meal.increment_counter(:impression_negative, meal.id)
       end
