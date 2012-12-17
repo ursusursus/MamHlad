@@ -27,4 +27,8 @@ class Canteen < ActiveRecord::Base
 		meals.sort_by {|m| m.impression_sum}.reverse.first
 	end
 
+	def to_s
+		name_full
+	end
+
 end
